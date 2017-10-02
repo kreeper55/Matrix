@@ -12,11 +12,7 @@ public class Point3D {
         this.z = z;
     }
 
-    public Point3D() {
-        this.x = 0;
-        this.y = 0;
-        this.z = 0;
-    }
+    public Point3D() { }
 
     @Override
     public boolean equals(Object o) {
@@ -25,9 +21,9 @@ public class Point3D {
 
         Point3D point3D = (Point3D) o;
 
-        if (Double.compare(point3D.x, x) != 0) return false;
-        if (Double.compare(point3D.y, y) != 0) return false;
-        return Double.compare(point3D.z, z) == 0;
+        if (Double.compare(point3D.x + +0.0, x) != 0) return false;
+        if (Double.compare(point3D.y + +0.0, y) != 0) return false;
+        return Double.compare(point3D.z + +0.0, z) == 0;
     }
 
     @Override
@@ -46,14 +42,6 @@ public class Point3D {
     public void outputPoint() {
         System.out.println("x " + this.x + "y " + this.y + "z " + this.z);
     }
-
-   /* public boolean checkEquality(double x1, double y1, double z1, double x2, double y2, double z2) {
-        if ((x1 == x2) && (y1 == y2) && (z1 == z2)) {
-            return true;
-        } else {
-            return false;
-        }
-    }*/
 
     public void setX(double x) {
         this.x = x;
@@ -79,4 +67,12 @@ public class Point3D {
         return z;
     }
 
+    @Override
+    public String toString() {
+        return "Point3D{" +
+                "x = " + x +
+                ", y = " + y +
+                ", z = " + z +
+                "}";
+    }
 }

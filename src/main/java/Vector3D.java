@@ -24,20 +24,18 @@ public class Vector3D {
         this.z = B.getZ() - A.getZ();
     }
 
-    public Vector3D() {
-        this.x = 0;
-        this.y = 0;
-        this.z = 0;
-    }
+    public Vector3D() { }
 
-    public double lengthVector(double x, double y, double z) {
+    public double lengthVector() {
         return Math.sqrt(Math.pow((x),2) + Math.pow((y),2) + Math.pow((z),2));
     }
 
-    public void constMultipl(double lyambda) {
-        this.x = this.x * lyambda;
-        this.y = this.y * lyambda;
-        this.z = this.z * lyambda;
+    public Vector3D constMultipl(double lyambda) {
+        Vector3D vector = new Vector3D(this);
+        x = x * lyambda;
+        y = y * lyambda;
+        z = z * lyambda;
+        return vector;
     }
 
     @Override
@@ -47,9 +45,9 @@ public class Vector3D {
 
         Vector3D vector3D = (Vector3D) o;
 
-        if (Double.compare(vector3D.x, x) != 0) return false;
-        if (Double.compare(vector3D.y, y) != 0) return false;
-        return Double.compare(vector3D.z, z) == 0;
+        if (Double.compare(vector3D.x + +0.0, x) != 0) return false;
+        if (Double.compare(vector3D.y + +0.0, y) != 0) return false;
+        return Double.compare(vector3D.z + +0.0, z) == 0;
     }
 
     @Override
@@ -71,7 +69,7 @@ public class Vector3D {
                 "x = " + x +
                 ", y = " + y +
                 ", z = " + z +
-                '}';
+                "}\n";
     }
 
     public double getX() {

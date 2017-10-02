@@ -32,19 +32,25 @@ public class Vector3DProcessor {
     }
 
     public static boolean equals(Vector3D vectorA, Vector3D vectorB) {
-        final double EPSILON = 0.00000001;
+        Vector3D vectorC = new Vector3D();
+        if (vectorC.equals(Vector3DProcessor.vectorMultiplicationVectors(vectorA, vectorB))) {
+            return true;
+        } else {
+            return false;
+        }
+        /*final double EPSILON = 0.00000001;
         // A || B
         boolean flag1 = (((Math.abs(vectorA.getX() / vectorB.getX() - vectorA.getY() / vectorB.getY()) < EPSILON) && (Math.abs(vectorA.getZ() / vectorB.getZ() - vectorA.getY() / vectorB.getY()) < EPSILON)) && (Math.abs(vectorA.getX() / vectorB.getX() - vectorA.getZ() / vectorB.getZ()) < EPSILON));
         // A == B
         boolean flag2 = vectorA.equals(vectorB);
-        vectorB.constMultipl(-1);
+        //vectorB.constMultipl(-1);
         // A == -B
-        boolean flag3 = vectorA.equals(vectorB);
+        boolean flag3 = vectorA.equals(vectorB.constMultipl(-1));
         if (flag1 || flag2 || flag3) {
             return true;
         }
         else {
             return false;
-        }
+        }*/
     }
 }
