@@ -1,4 +1,6 @@
+package vectors;
 
+import static vectors.Vector3DProcessor.additionVectors;
 
 /**
  * Created by student on 20.09.17.
@@ -6,7 +8,10 @@
 public class Vector3DArray {
     private Vector3D[] array;
 
-    public Vector3DArray (int size) {
+    public Vector3DArray (int size) throws BadSizeValueException {
+        if (size <=0) {
+            throw new BadSizeValueException();
+        }
         array = new Vector3D[size];
         for (int i = 0; i < size; i++) {
             array[i] = new Vector3D();
@@ -16,7 +21,7 @@ public class Vector3DArray {
     public Vector3DArray (Vector3D ... vectors) {
         array = new Vector3D[vectors.length];
         for (int i = 0; i < vectors.length; i++) {
-            array[i] = vectors[i];
+            array[i] = new Vector3D(vectors[i]);
         }
     }
 
@@ -25,17 +30,13 @@ public class Vector3DArray {
     }
 
     public double maxLengthOfVector3D() {
-        if (array != null) {
-            double temp = array[0].lengthVector();
-            for (int i = 1; i < this.length(); i++) {
-                if (array[i].lengthVector() > temp) {
-                    temp = array[i].lengthVector();
-                }
+        double temp = array[0].lengthVector();
+        for (int i = 1; i < this.length(); i++) {
+            if (array[i].lengthVector() > temp) {
+                temp = array[i].lengthVector();
             }
-            return temp;
-        } else {
-            return -1;
         }
+        return temp;
     }
 
     public int findFirstVector(double x, double y, double z) {
@@ -45,29 +46,24 @@ public class Vector3DArray {
             if ((array[i].getX() == x) && (array[i].getY() == y) && (array[i].getZ() == z)) {
                 return i;
             }
-            else {
-                i++;
-            }
+            i++;
         }
         return -1;
     }
 
     public Vector3D sumVectors() {
         Vector3D vector = new Vector3D();
-        if (array == null) return vector;
         for (int i = 0; i < this.length(); i++) {
-            vector = Vector3DProcessor.additionVectors(vector, array[i]);
+            vector = additionVectors(vector, array[i]);
         }
         return vector;
     }
 
-    public int changeElem(Vector3D vector, int position) {
-        if (position >= 0 && position < this.length()) {
-            array[position] = new Vector3D(vector);
-            return 0;
-        } else {
-            return -1;
+    public void changeElem(Vector3D vector, int position) throws BadSizeValueException {
+        if (position < 0 || position >= this.length()) {
+            throw new BadSizeValueException("Bad index in array: " + position);
         }
+        array[position] = new Vector3D(vector);
     }
 
     public Point3D[] movePoint(Point3D point) {
@@ -83,7 +79,7 @@ public class Vector3DArray {
         if (args.length != this.length() && this.length() == 0) throw  new IllegalArgumentException();
         Vector3D vector = new Vector3D();
         for (int i = 0; i < this.length(); i++) {
-            vector = Vector3DProcessor.additionVectors(vector, array[i].constMultipl(args[i]));
+            vector = additionVectors(vector, array[i].constMultipl(args[i]));
         }
         return vector;
     }

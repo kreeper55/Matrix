@@ -29,7 +29,7 @@ public class Arrays {
         for (int i : arr) {
             temp += i;
         }
-        return temp / arr.length;
+        return temp;
     }
 
     public static int amountChetnNumbers(int[] arr) {
@@ -61,7 +61,7 @@ public class Arrays {
 
     public static boolean posNumbers(int[] arr) {
         for (int i : arr) {
-            if (i < 0) {
+            if (i <= 0) {
                 return false;
             }
         }

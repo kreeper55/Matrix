@@ -1,3 +1,4 @@
+package vectors;
 /**
  * Created by Student on 11.09.2017.
  */
@@ -32,9 +33,9 @@ public class Vector3D {
 
     public Vector3D constMultipl(double lyambda) {
         Vector3D vector = new Vector3D(this);
-        x = x * lyambda;
-        y = y * lyambda;
-        z = z * lyambda;
+        vector.x = vector.x * lyambda;
+        vector.y = vector.y * lyambda;
+        vector.z = vector.z * lyambda;
         return vector;
     }
 

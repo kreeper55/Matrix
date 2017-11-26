@@ -1,3 +1,4 @@
+package vectors;
 public class Vector3DProcessor {
     // A + B
     public static Vector3D additionVectors(Vector3D vectorA, Vector3D vectorB) {

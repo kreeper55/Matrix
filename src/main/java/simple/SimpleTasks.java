@@ -94,6 +94,10 @@ public class SimpleTasks {
 
     public static void lineEq (double a1, double b1, double c1, double a2, double b2, double c2)
     {
+        if ((a1 == 0 && b1 == 0) && (a2 == 0 && b2 == 0) && (c1 != 0 || c2 != 0)) {
+            System.out.println("коэффициенты при х1, y1 и х2, y2 равны 0 и есть хотя бы одна константа != 0 => система не имеет решения");
+            return;
+        }
         Double detx1 = 0.0;
         Double detx2 = 0.0;
         Double det = 0.0;
@@ -103,8 +107,10 @@ public class SimpleTasks {
             detx2 = (a1 * c2 - a2 * c1);
             if (detx1 != 0 || detx2 != 0) {
                 System.out.println("Определители при неизвестных не равны нулю, следовательно, система несовместна, то есть не имеет решений.");
+                return;
             } else {
                 System.out.println("Система линейных уравнений имеет бесчисленное множество решений");
+                return;
             }
         } else {
             detx1 = (c1 * b2 - c2 * b1) / det;
