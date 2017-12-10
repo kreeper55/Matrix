@@ -6,3 +6,10 @@
 *.zip
 *.tar.gz
 *.rar
+*.xml
+
+target/
+out/
+.idea
+.idea/
+**/*.iml
