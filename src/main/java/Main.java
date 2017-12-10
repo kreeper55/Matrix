@@ -1,10 +1,6 @@
 import Strings.FinanceReport;
 import Strings.NegativeMeaning;
 import Strings.Payment;
-import Strings.StringProcessor;
-import com.sun.org.apache.xpath.internal.operations.Neg;
-import simple.NoRealRootsException;
-import simple.NotSquareEqException;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -23,7 +19,19 @@ public class Main {
 
     public static void main(String[] arg) throws NegativeMeaning, IOException {
 
-        String[] strings = {"",
+        /*Payment Max = new Payment("MMA", 27,12,1998, 10000);
+        Payment Slava = new Payment("SUN", 23,11,1998, 1000);
+        Payment Ilusha = new Payment("KII", 20,9,1997, 100000);
+        FinanceReport object = new FinanceReport(3);
+        object.setPayments(0, Max);
+        object.setPayments(1, Slava);
+        object.setPayments(2, Ilusha);
+        object.write();*/
+        FinanceReport object = new FinanceReport(3);
+        object.read();
+        object.toString();
+        System.out.println(object.getPaymentsOfPeople('s'));
+        /*String[] strings = {"",
                             "_qq_",
                             "___123_erty_11_",
                             "__firstword__sdh_gd____fh___",
@@ -36,15 +44,8 @@ public class Main {
             System.out.println(StringProcessor.replaceWords(s_buffer).toString());
         }
 
-        /*
-        Payment Max = new Payment("MMA", 27,12,1998, 10000);
-        Payment Slava = new Payment("SUN", 23,11,1998, 1000);
-        Payment Ilusha = new Payment("KII", 20,9,1997, 100000);
-        FinanceReport object = new FinanceReport(3);
-        object.setPayments(0, Max);
-        object.setPayments(1, Slava);
-        object.setPayments(2, Ilusha);
-        object.write();
+
+
         /*
         System.out.println();
         lineEq(0,0,0, 0,0,0);

@@ -1,7 +1,5 @@
 package Strings;
 
-import com.sun.org.apache.xpath.internal.operations.Neg;
-
 import java.util.Arrays;
 
 public class Payment {
@@ -14,27 +12,12 @@ public class Payment {
     private int[] daysInMonths = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
     public Payment(String fullname, int day, int month, int year, int amountOfPayment) throws NegativeMeaning {
-        if (checkData(day, month, year) && (amountOfPayment > 0))  {
-            this.fullname = fullname;
-            this.day = day;
-            this.month = month;
-            this.year = year;
-            this.amountOfPayment = amountOfPayment;
-        }
+        setFullname(fullname);
+        setData(day, month, year);
+        setAmountOfPayment(amountOfPayment);
     }
 
-    public boolean checkData(int day, int month, int year) throws NegativeMeaning {
-        this.leap_year = (year % 4 == 0) ? true : false;
-        if ((year < 1900 || year > 2017) || (month < 1 || month > 12) || (day < 1)) {
-            throw new NegativeMeaning("Некорректно введенные данные");
-        }
-        if (day > this.daysInMonths[month-1] || (this.leap_year && (month == 2-1 ) && (day > 29))) {
-            throw new NegativeMeaning("Некорректно введенные данные");
-        }
-        return true;
-    }
-
-    public void set_fullname(String fullname) {
+    public void setFullname(String fullname) {
         this.fullname = fullname;
     }
 
@@ -49,7 +32,20 @@ public class Payment {
     public void setAmountOfPayment(int amountOfPayment) {
         if (amountOfPayment > 0) {
             this.amountOfPayment = amountOfPayment;
+        } else {
+            this.amountOfPayment = 0;
         }
+    }
+
+    public boolean checkData(int day, int month, int year) throws NegativeMeaning {
+        this.leap_year = (year % 4 == 0) ? true : false;
+        if ((year < 1900 || year > 2017) || (month < 1 || month > 12) || (day < 1)) {
+            throw new NegativeMeaning("Некорректно введенные данные");
+        }
+        if (day > this.daysInMonths[month-1] || (this.leap_year && (month == 2-1 ) && (day > 29))) {
+            throw new NegativeMeaning("Некорректно введенные данные");
+        }
+        return true;
     }
 
     @Override
@@ -84,10 +80,11 @@ public class Payment {
                 ';' + day +
                 '.' + month +
                 '.' + year +
-                ";" + amountOfPayment;
+                ';' + amountOfPayment +
+                '|';
     }
 
-    public String get_fullname() {
+    public String getFullname() {
         return fullname;
     }
 

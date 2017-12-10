@@ -20,24 +20,49 @@ public class FinanceReport {
         payments = new Payment[amountPayments];
     }
 
-    public FinanceReport () {
+    public FinanceReport(Payment[] payments) {
+        this.payments = payments;
     }
 
-    public void read() throws IOException, FileNotFoundException {
-        FileInputStream inputStream = new FileInputStream("D:\\fleshka\\java\\laba1\\keeper.txt");
-        int data = inputStream.read();
-        char content;
-        while(data != -1) {
-            content = (char) data;
-            System.out.print(content);
-            data = inputStream.read();
+    public void read() throws IOException, NegativeMeaning  {
+        try(FileInputStream inputStream = new FileInputStream("H:\\fleshka\\java\\laba1\\keeper.txt"))
+        {
+            int step = 0;
+            int data;
+            char content;
+            StringBuilder temp = new StringBuilder();
+            while((data = inputStream.read())!= -1){
+                content = (char) data;
+                temp.append(content);
+                if (content == '|') {
+                    System.out.println(temp);
+
+                    String fullname = temp.substring(0, temp.indexOf(";"));
+                    temp.delete(0, temp.indexOf(";") + 1);
+
+                    int day = Integer.parseInt(temp.substring(0, temp.indexOf(".")));
+                    temp.delete(0, temp.indexOf(".") + 1);
+                    int month = Integer.parseInt(temp.substring(0, temp.indexOf(".")));
+                    temp.delete(0, temp.indexOf(".") + 1);
+                    int year = Integer.parseInt(temp.substring(0, temp.indexOf(";")));
+                    temp.delete(0, temp.indexOf(";") + 1);
+
+                    int amountOfPayment = Integer.parseInt(temp.substring(0, temp.length() - 1));
+                    temp.delete(0, temp.length());
+                    this.payments[step] = new Payment(fullname, day, month, year, amountOfPayment);
+                    step++;
+                }
+            }
+            inputStream.close();
         }
-        inputStream.close();
+        catch(IOException ex){
+            System.out.println(ex.getMessage());
+        }
     }
 
-    public void write() throws FileNotFoundException, IOException, NegativeMeaning {
+    public void write() throws IOException, NegativeMeaning {
         if (this.getAmountOfPayment() <= 0) throw new NegativeMeaning("Bad size");
-        FileOutputStream outputStream = new FileOutputStream("D:\\fleshka\\java\\laba1\\keeper.txt", true);
+        FileOutputStream outputStream = new FileOutputStream("H:\\fleshka\\java\\laba1\\keeper.txt", true);
         for (int i = 0; i < getAmountOfPayment(); i++) {
             byte[] buffer = payments[i].toString().getBytes();
             outputStream.write(buffer);
@@ -45,17 +70,60 @@ public class FinanceReport {
         outputStream.close();
     }
 
+    public String getPaymentsOfPeople(char firstLetter) {
+        if (payments == null) return "No data";
+        String string = "";
+        for (Payment payment : payments) {
+            if (payment.getFullname().toLowerCase().charAt(0) == firstLetter) {
+                string = string.concat(String.format(
+                        "Плательщик \"%s\" дата: %02d.%02d.%d сумма: %02d руб. %d коп.",
+                        payment.getFullname(), payment.getDay(), payment.getMonth(), payment.getYear(),
+                        payment.getAmountOfPayment() / 100, payment.getAmountOfPayment() % 100));
+                string = string.concat("\n");
+            }
+        }
+        return string;
+    }
+
+    public String getPaymentsOfPeople(int value) {
+        if (payments == null) return "No data";
+        String string = "";
+        for (Payment payment : payments) {
+            if (payment.getAmountOfPayment() < value) {
+                string = string.concat(String.format(
+                        "Плательщик \"%s\" дата: %02d.%02d.%d сумма: %02d руб. %d коп.",
+                        payment.getFullname(), payment.getDay(), payment.getMonth(), payment.getYear(),
+                        payment.getAmountOfPayment() / 100, payment.getAmountOfPayment() % 100));
+                string = string.concat("\n");
+            }
+        }
+        return string;
+    }
+
     public int getAmountOfPayment() {
         return payments.length;
     }
 
-    public void setPayments(int position, Payment object) {
+    public void setPayments(int position, Payment object) throws NegativeMeaning {
+        if (position < 0 || position >= payments.length)
+            throw new NegativeMeaning("Bad size");
         payments[position] = object;
     }
 
-    public Payment gerPayment(int position) {
+    public Payment getPayment(int position) throws NegativeMeaning {
+        if (position < 0 || position >= payments.length)
+            throw new NegativeMeaning("Bad size");
         return payments[position];
     }
+
+    public void setPayments(Payment[] payments) {
+        this.payments = payments;
+    }
+
+    public Payment[] getPayments() {
+        return payments;
+    }
+
 }
 
 /*
