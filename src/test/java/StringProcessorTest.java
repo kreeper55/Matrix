@@ -105,9 +105,9 @@ public class StringProcessorTest {
         assertEquals(replaceWords(s_buffer).toString(), expected);
     }
 
-    @Test(dataProvider = "changeAge")
-    public void testChange4(String source, String expected) {
-        assertEquals(hexadecimal(source), expected);
-    }
+//    @Test(dataProvider = "changeAge")
+//    public void testChange4(String source, String expected) {
+//        assertEquals(hexadecimal(source), expected);
+//    }
 
 }

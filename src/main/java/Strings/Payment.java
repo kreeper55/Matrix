@@ -9,12 +9,18 @@ public class Payment {
     private int year;
     private int amountOfPayment;
     private boolean leap_year;
-    private int[] daysInMonths = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    private static int[] daysInMonths = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
     public Payment(String fullname, int day, int month, int year, int amountOfPayment) throws NegativeMeaning {
         setFullname(fullname);
         setData(day, month, year);
         setAmountOfPayment(amountOfPayment);
+    }
+
+    public Payment(Payment object) throws NegativeMeaning {
+        setFullname(object.getFullname());
+        setData(object.getDay(), object.getMonth(), object.getYear());
+        setAmountOfPayment(object.getAmountOfPayment());
     }
 
     public void setFullname(String fullname) {

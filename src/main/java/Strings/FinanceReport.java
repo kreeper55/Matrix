@@ -20,12 +20,16 @@ public class FinanceReport {
         payments = new Payment[amountPayments];
     }
 
-    public FinanceReport(Payment[] payments) {
-        this.payments = payments;
+    public FinanceReport(Payment[] payments) throws NegativeMeaning {
+        this.setPayments(payments);
     }
 
-    public void read() throws IOException, NegativeMeaning  {
-        try(FileInputStream inputStream = new FileInputStream("H:\\fleshka\\java\\laba1\\keeper.txt"))
+    public FinanceReport(FinanceReport reports) throws NegativeMeaning {
+        this.setPayments(reports.getPayments());
+    }
+
+    public void read(FileInputStream inputStream) throws IOException, NegativeMeaning  {
+        try //(/*FileInputStream inputStream = new FileInputStream("D:\\fleshka\\java\\laba1\\keeper.txt")*/)
         {
             int step = 0;
             int data;
@@ -62,7 +66,7 @@ public class FinanceReport {
 
     public void write() throws IOException, NegativeMeaning {
         if (this.getAmountOfPayment() <= 0) throw new NegativeMeaning("Bad size");
-        FileOutputStream outputStream = new FileOutputStream("H:\\fleshka\\java\\laba1\\keeper.txt", true);
+        FileOutputStream outputStream = new FileOutputStream("D:\\fleshka\\java\\laba1\\keeper.txt", true);
         for (int i = 0; i < getAmountOfPayment(); i++) {
             byte[] buffer = payments[i].toString().getBytes();
             outputStream.write(buffer);
@@ -107,7 +111,7 @@ public class FinanceReport {
     public void setPayments(int position, Payment object) throws NegativeMeaning {
         if (position < 0 || position >= payments.length)
             throw new NegativeMeaning("Bad size");
-        payments[position] = object;
+        payments[position] = new Payment(object);
     }
 
     public Payment getPayment(int position) throws NegativeMeaning {
@@ -116,8 +120,13 @@ public class FinanceReport {
         return payments[position];
     }
 
-    public void setPayments(Payment[] payments) {
-        this.payments = payments;
+    public void setPayments(Payment[] payments) throws  NegativeMeaning {
+        int step = 0;
+        payments = new Payment[payments.length];
+        for (Payment payment : payments) {
+            this.payments[step] = new Payment(payment);
+            step++;
+        }
     }
 
     public Payment[] getPayments() {

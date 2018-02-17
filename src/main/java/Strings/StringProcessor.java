@@ -97,12 +97,12 @@ public class StringProcessor {
         string = string.replace(indexForFirst - firstWord.length(), indexForFirst, secondWord.toString());
         return string;
     }
-
+/*
     public static String hexadecimal (String string) {
         if (string.length() == 0) return new String();
         string = string.toUpperCase();
 
-        /*int begIndex = string.indexOf("0x"), endIndex = begIndex + 10;
+        int begIndex = string.indexOf("0x"), endIndex = begIndex + 10;
         StringBuilder answer = new StringBuilder();
         answer = String.valueOf(string.substring(begIndex, endIndex));
         int decimal = 0;
@@ -110,9 +110,11 @@ public class StringProcessor {
             if (((char)hexadecimal.charAt(i) > 57 && (char)hexadecimal.charAt(i) < 48) || ((char)hexadecimal.charAt(i) > 70 && (char)hexadecimal.charAt(i) < 65)) {
                 return new String();
             }
-        }*/
+        }
         return new String();
     }
+*/
+
     /*
     * Строка содержит подстроки вида 0xNNNNNNNN, где N — шестнадцатеричная цифра.
     * Постройте новую строку, в которой шестнадцатеричные числа будут заменены на десятичные эквиваленты
