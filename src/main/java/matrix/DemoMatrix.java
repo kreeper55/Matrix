@@ -1,8 +1,8 @@
-package RUOmGUIMIT;
+package matrix;
 
-import RUOmGUIMIT.MyExceptions.BadSize;
-import RUOmGUIMIT.MyExceptions.IndexOutOfRange;
-import RUOmGUIMIT.MyExceptions.NotSizeOfMatrixInFileException;
+import matrix.MyExceptions.BadSize;
+import matrix.MyExceptions.IndexOutOfRange;
+import matrix.MyExceptions.NotSizeOfMatrixInFileException;
 
 import java.io.*;
 import java.util.Locale;
@@ -59,22 +59,35 @@ public class DemoMatrix {
         return sum;
     }
 
-    public static void serializeMatrix(String filename, MyMatrix matrix) throws IOException {
-        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
-            oos.writeObject(matrix);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+    public static void serialize(OutputStream stream, MyMatrix obj) throws IOException{
+        ObjectOutputStream oos = new ObjectOutputStream(stream);
+        oos.writeObject(obj);
+        oos.flush();
+        oos.close();
     }
 
-    public static MyMatrix deserializeMatrix(String filename) throws IOException, ClassNotFoundException {
-        MyMatrix matrix;
-        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
-            matrix = (MyMatrix)ois.readObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return matrix;
+    public static MyMatrix deserialize(InputStream stream) throws IOException, ClassNotFoundException{
+        ObjectInputStream oin = new ObjectInputStream(stream);
+        return (MyMatrix) oin.readObject();
     }
+
+//    public static void serializeMatrix(String filename, MyMatrix matrix) throws IOException {
+//        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+//            oos.writeObject(matrix);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    public static MyMatrix deserializeMatrix(String filename) throws IOException, ClassNotFoundException {
+//        MyMatrix matrix;
+//        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+//            matrix = (MyMatrix)ois.readObject();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//        return matrix;
+//    }
 }

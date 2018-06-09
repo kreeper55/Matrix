@@ -1,8 +1,9 @@
-package RUOmGUIMIT;
+package matrix;
 
-import RUOmGUIMIT.MyExceptions.BadSize;
-import RUOmGUIMIT.MyExceptions.IndexOutOfRange;
-import RUOmGUIMIT.MyExceptions.MatrixIsNotInvertibleMatrix;
+import matrix.Interfaces.IInvertibleMatrix;
+import matrix.MyExceptions.BadSize;
+import matrix.MyExceptions.IndexOutOfRange;
+import matrix.MyExceptions.MatrixIsNotInvertibleMatrix;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -27,21 +28,21 @@ public class InvertibleMatrixTest {
     @DataProvider
     public static Object[][] invertibleExcept() throws BadSize, IndexOutOfRange, MatrixIsNotInvertibleMatrix {
         return new Object[][] {
-                {new InvertibleMatrix(3, 1,2,3,4,5,6,7,8,9)},
-                {new InvertibleMatrix(4, 1,4,0,5,7,-9,0,1,4,4,0,7,-8,1,0,1)}
+                {3, 1,2,3,  4,5,6,  7,8,9},
+                {4, 1,4,0,5,  7,-9,0,1,  4,4,0,7,  -8,1,0,1}
         };
     }
 
 
     @Test(dataProvider = "invertible")
     public void invertibleTest(MyMatrix blossom) throws IndexOutOfRange, MatrixIsNotInvertibleMatrix, BadSize {
-        InvertibleMatrix im = new InvertibleMatrix(blossom);
+        IInvertibleMatrix im = new InvertibleMatrix(blossom);
         assertTrue(blossom.multiply(im.getInvertibleMatrix()).isIdentity());
     }
 
     @Test(dataProvider = "invertibleExcept", expectedExceptions = MatrixIsNotInvertibleMatrix.class)
-    public void invertibleFail(InvertibleMatrix im) throws MatrixIsNotInvertibleMatrix, IndexOutOfRange, BadSize {
-        im.getInvertibleMatrix();
+    public void invertibleFail(int size, double ... args) throws MatrixIsNotInvertibleMatrix, IndexOutOfRange, BadSize {
+        InvertibleMatrix invert = new InvertibleMatrix(size, args);
         fail();
     }
 }

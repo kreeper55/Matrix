@@ -1,7 +1,7 @@
-package RUOmGUIMIT;
+package matrix;
 
-import RUOmGUIMIT.MyExceptions.BadSize;
-import RUOmGUIMIT.MyExceptions.IndexOutOfRange;
+import matrix.MyExceptions.BadSize;
+import matrix.MyExceptions.IndexOutOfRange;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
