@@ -1,31 +1,36 @@
-package RUOmGUIMIT;
+package matrix;
 
-import RUOmGUIMIT.Interfaces.IMatrix;
-import RUOmGUIMIT.MyExceptions.BadSize;
-import RUOmGUIMIT.MyExceptions.IndexOutOfRange;
+import matrix.Interfaces.IMatrix;
+import matrix.MyExceptions.BadSize;
+import matrix.MyExceptions.IndexOutOfRange;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class MyMatrix implements IMatrix {
+public class MyMatrix implements IMatrix, Serializable {
     protected int size;
     protected double[] arr;
+    protected boolean isDetActual;
+    protected double determinant;
 
     public MyMatrix(int n) throws BadSize, IndexOutOfRange {
         if (size < 0) throw new BadSize("bad size : size < 0");
-        this.size = n;
+        size = n;
+        isDetActual = false;
+        determinant = 0;
         arr = new double [size * size];
+
         for (int i = 0; i < size * size; i++) {
             arr[i] = 0;
-        }
-        for (int i = 0; i < size; i++) {
-            this.changeElement(i,i,1);
         }
     }
 
     public MyMatrix(int n, double... elements) throws BadSize {
         if (size < 0) throw new BadSize("bad size : size < 0");
         if (elements.length != n * n) throw new BadSize("length of elements isn't equalse a size");
-        this.size = n;
+        size = n;
+        isDetActual = false;
+        determinant = 0;
         arr = new double [size * size];
         for (int i = 0; i < size * size; i++) {
             arr[i] = elements[i];
@@ -34,17 +39,13 @@ public class MyMatrix implements IMatrix {
 
     public MyMatrix(MyMatrix matrix) {
         this.size = matrix.size;
+        this.isDetActual = matrix.isDetActual;
+        this.determinant = matrix.determinant;
         this.arr = new double[size * size];
         System.arraycopy(matrix.arr, 0, this.arr, 0, size * size);
     }
 
-
-    public void changeElement(int i, int j, double element) throws IndexOutOfRange{
-        if ((i >= size || j >= size )|| (i < 0 || j < 0)) throw new IndexOutOfRange("index out of range");
-        arr[j + size * i] = element;
-    }
-
-    static public double determinantMinor(MyMatrix matrix) throws IndexOutOfRange, BadSize { //need fix
+    public static  double determinantMinor(MyMatrix matrix) throws IndexOutOfRange, BadSize { //need fix
         if (matrix.getSize() == 2) return matrix.getElement(0,0) * matrix.getElement(1,1) -  matrix.getElement(0,1) * matrix.getElement(1,0);
         if (matrix.getSize() == 1) return matrix.getElement(0,0);
         if (matrix.getSize() == 0) return 0;
@@ -68,12 +69,14 @@ public class MyMatrix implements IMatrix {
                 result += -1 * matrix.getElement(0, column) * MyMatrix.determinantMinor(temp);
             }
         }
+        //flag = true;
         return result + 0.0;
     }
 
     public double determinantGauss() throws IndexOutOfRange{
+        if (isDetActual) return determinant;
         MyMatrix matrix = new MyMatrix(this);
-        double result = 1;
+        determinant = 1;
 
         for (int j = 0; j < size - 1; j++) {
             for (int row = 1 + j; row < size; row++) {
@@ -92,7 +95,7 @@ public class MyMatrix implements IMatrix {
                                 matrix.changeElement(j,column, matrix.getElement(f, column));
                                 matrix.changeElement(f, column, temp);*/
                             }
-                            result *= -1;
+                            determinant *= -1;
                             break;
                         }
                     }
@@ -106,10 +109,10 @@ public class MyMatrix implements IMatrix {
         }
 
         for (int i = 0; i < size; i++) {
-            result *= matrix.getElement(i, i);
+            determinant *= matrix.getElement(i, i);
         }
-
-        return result + 0.0;
+        isDetActual = true;
+        return determinant + 0.0;
     }
 
     public MyMatrix multiply(IMatrix obj) throws BadSize, IndexOutOfRange {
@@ -137,7 +140,7 @@ public class MyMatrix implements IMatrix {
                         return false;
                     }
                 } else {
-                    if (Math.abs(getElement(i, j) - 0) > 1e-9) {
+                    if (Math.abs(getElement(i, j)) > 1e-9) {
                         return false;
                     }
                 }
@@ -146,9 +149,22 @@ public class MyMatrix implements IMatrix {
         return true;
     }
 
+    public void changeElement(int i, int j, double element) throws IndexOutOfRange{
+        if ((i >= size || j >= size )|| (i < 0 || j < 0)) throw new IndexOutOfRange("index out of range");
+        arr[j + size * i] = element;
+        isDetActual = false;
+    }
+
     public double getElement(int i, int j) throws IndexOutOfRange{
         if ((i >= size || j >= size )|| (i < 0 || j < 0)) throw new IndexOutOfRange("index out of range");
         return arr[j + size * i];
+    }
+
+    public double getDeterminant() throws IndexOutOfRange {
+        if (isDetActual)
+            return determinant;
+        else
+            return this.determinantGauss();
     }
 
     public int getSize() {
@@ -160,16 +176,33 @@ public class MyMatrix implements IMatrix {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        MyMatrix myMatrix = (MyMatrix) o;
+        MyMatrix matrix = (MyMatrix) o;
 
-        if (size != myMatrix.size) return false;
-        return Arrays.equals(arr, myMatrix.arr);
+        if (size != matrix.size) return false;
+        if (isDetActual != matrix.isDetActual) return false;
+        if (Double.compare(matrix.determinant, determinant) != 0) return false;
+        return Arrays.equals(arr, matrix.arr);
     }
 
     @Override
     public int hashCode() {
-        int result = size;
+        int result;
+        long temp;
+        result = size;
         result = 31 * result + Arrays.hashCode(arr);
+        result = 31 * result + (isDetActual ? 1 : 0);
+        temp = Double.doubleToLongBits(determinant);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MyMatrix{" +
+                "size=" + size +
+                ", arr=" + Arrays.toString(arr) +
+                ", isDetActual=" + isDetActual +
+                ", determinant=" + determinant +
+                '}';
     }
 }

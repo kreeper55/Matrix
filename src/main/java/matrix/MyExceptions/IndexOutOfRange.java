@@ -1,6 +1,6 @@
-package RUOmGUIMIT.MyExceptions;
+package matrix.MyExceptions;
 
-public class IndexOutOfRange extends Exception {
+public class IndexOutOfRange extends MatrixException {
     public IndexOutOfRange(String message) {
         super(message);
     }

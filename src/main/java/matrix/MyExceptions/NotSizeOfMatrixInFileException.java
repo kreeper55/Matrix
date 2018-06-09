@@ -1,6 +1,6 @@
-package RUOmGUIMIT.MyExceptions;
+package matrix.MyExceptions;
 
-public class NotSizeOfMatrixInFileException extends Exception {
+public class NotSizeOfMatrixInFileException extends MatrixException {
     public NotSizeOfMatrixInFileException(String message) {
         super(message);
     }

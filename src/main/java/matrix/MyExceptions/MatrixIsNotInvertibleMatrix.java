@@ -1,6 +1,6 @@
-package RUOmGUIMIT.MyExceptions;
+package matrix.MyExceptions;
 
-public class MatrixIsNotInvertibleMatrix extends Exception{
+public class MatrixIsNotInvertibleMatrix extends MatrixException{
     public MatrixIsNotInvertibleMatrix(String message) {
         super(message);
     }

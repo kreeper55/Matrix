@@ -1,6 +1,6 @@
-package RUOmGUIMIT.Interfaces;
+package matrix.Interfaces;
 
-import RUOmGUIMIT.MyExceptions.IndexOutOfRange;
+import matrix.MyExceptions.IndexOutOfRange;
 
 public interface IMatrix {
     double getElement(int i, int j) throws IndexOutOfRange;
